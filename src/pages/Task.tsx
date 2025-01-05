@@ -1,26 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { deccrement, increment } from "@/redux/features/counter/counterSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { AddTaskModal } from "@/components/module/task/AddTaskModal";
+import TaskCard from "@/components/module/task/TaskCard";
+import { selectTasks } from "@/redux/features/task/taskSlice";
+import { useAppSelector } from "@/redux/hook";
 
 function Task() {
-  const dispatch = useAppDispatch();
-  const { count } = useAppSelector((state) => state.counter);
+  const tasks = useAppSelector(selectTasks);
 
-  const handleIncrement = (value: number) => {
-    dispatch(increment(value));
-  };
-
-  const handleDeccrement = (value: number) => {
-    dispatch(deccrement(value));
-  };
+  console.log(tasks);
 
   return (
     <>
+      <AddTaskModal />
       <div>
-        <h1>Coumter With Redux</h1>
-        <Button onClick={() => handleIncrement(1)}>Increment</Button>
-        <div>{count}</div>
-        <Button onClick={() => handleDeccrement(1)}>Decrement</Button>
+        {tasks?.map((item) => {
+          return <TaskCard key={item?.id} task={item} />;
+        })}
       </div>
     </>
   );
