@@ -2,7 +2,7 @@ import App from "@/App";
 import Counter from "@/pages/Counter";
 import Login from "@/pages/Login";
 import Task from "@/pages/Task";
-import Users from "@/pages/Users";
+import User from "@/pages/User";
 import { createBrowserRouter } from "react-router-dom";
 
 const routes = createBrowserRouter([
@@ -16,7 +16,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "users",
-        element: <Users />,
+        element: <User />,
       },
       {
         path: "counter",

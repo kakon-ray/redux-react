@@ -33,23 +33,28 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { addTask } from "@/redux/features/task/taskSlice";
-import { useAppDispatch } from "@/redux/hook";
+import { selectUser } from "@/redux/features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { ITask } from "@/types";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTaskModal() {
+  const [open, setOpen] = useState(false);
   const form = useForm();
-
   const dispatch = useAppDispatch();
+  const users = useAppSelector(selectUser);
 
-  const onsubmit : SubmitHandler<FieldValues> = (value) => {
+  const onsubmit: SubmitHandler<FieldValues> = (value) => {
     dispatch(addTask(value as ITask));
+    setOpen(false);
+    form.reset();
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="my-4">Add Task</Button>
       </DialogTrigger>
@@ -104,9 +109,38 @@ export function AddTaskModal() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Heigh">Heigh</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="Low">Low</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="heigh">Heigh</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="assignTo"
+              render={({ field }) => (
+                <FormItem className="my-4">
+                  <FormLabel>User</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a User" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {users.map((user) => {
+                        return (
+                          <SelectItem value={user?.id}>{user?.name}</SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
 

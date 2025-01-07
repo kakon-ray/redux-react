@@ -4,5 +4,10 @@ export interface ITask {
   description: string;
   dueDate: string; // format: YYYY-MM
   isCompleted: boolean;
-  priority: "High" | "Medium" | "Low"; // Priority can be limited to specific values
+  assignTo: string | null;
+  priority: "heigh" | "medium" | "low" | "all"; // Priority can be limited to specific values
+}
+export interface IUser {
+  id: string;
+  name: string;
 }
